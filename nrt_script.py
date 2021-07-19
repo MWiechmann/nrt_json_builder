@@ -138,7 +138,6 @@ class BaseSet(tk.Frame):
             if key == "memory":
                 print(self.items["memory"].get("1.0","end"))
                 memory_clean = clean_text_input(self.items["memory"].get("1.0","end"))
-                print(memory_clean)
                 self.settings["memory"] = memory_clean
             elif key == "authors_note":
                 authors_note_clean = clean_text_input(self.items["authors_note"].get("1.0","end"))
@@ -366,7 +365,6 @@ class SetPermParams(tk.Frame):
                     print("WARNING! Transformation missing  for {} into {} for SetPermParams".format(key, str(setting_type)))
             json_content["permutations"][0][key] = self.perm[key]
         print(self.perm)
-        print(json_content)
         self.master.destroy()
         self.quit()
 
@@ -375,7 +373,6 @@ root.title("Set Permutation Parameters")
 SetPermParams(root).grid()
 root.mainloop()
 
-print(json_content)
 
 with open(json_file, 'w') as file:
     json.dump(json_content, file, indent=4)
