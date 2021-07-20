@@ -18,6 +18,6 @@ The Json Builder provieds a GUI that you can use to build your Input-JSONs for `
 The JSON Builder can also generate a config file that allows you to run `nrt` through the nrt Launcher.
 
 # The nrt Launcher
-Are you clinically averse to running programs through the command line? Fear not: Just start `nrt` with the nrt launcher! It takes an ini file with the location of your `nrt` install and the location of you JSON file and then starts up your test batch through `ntr`.
+Are you clinically averse to running programs through the command line? Fear not: Just start `nrt` with the nrt launcher! It takes an ini file with the location of your `nrt` install and the location of you JSON file and then starts up your test batch through `nrt`.
 
 Okay...I admit must people will not need the functionality of the nrt Launcher. Right now it is just a stepping stone for some functionality I want to add soon™.
