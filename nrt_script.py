@@ -44,6 +44,12 @@ json_file = tk.filedialog.asksaveasfilename(initialdir = current_dir,
     filetypes = (("json files","*.json"),("all files","*.*")))
 json_dir = os.path.dirname(json_file)
 
+scenario_choice = pmb.confirm("Do you want to use txt prompts or a scenario file for the base settings?", "Use scneario file?", [".txt file", ".scneario file"])
+
+if scenario_choice == ".scneario file":
+    json_content["scenario_filename"] = json_content.pop("prompt_filename")
+    json_content["scenario_filename"] = "scenario.scenario"
+
 # MENU 1 : Enter Base Settings
 class BaseSet(tk.Frame):
     def __init__(self,master=None,**kw):
@@ -64,14 +70,14 @@ class BaseSet(tk.Frame):
         value = tk.StringVar()
 
         for key in self.settings:
-            if key == "prompt_filename":
-                # Browse Button for Base Prompt
+            if (key == "prompt_filename") or (key == "scenario_filename"):
+                # Browse Button for Base Prompt/Scenario
                 # has its own handling and is thus not stored in self.items
-                tk.Label(self,text="Base Prompt File").grid(row=row_nr,column=0, sticky="E")
+                tk.Label(self,text=key).grid(row=row_nr,column=0, sticky="E")
                 tk.Button(self,text="Browse", command = self.set_prompt).grid(row=row_nr,column=1, sticky = "W")
                 row_nr += 1
                 # Text displaying current Base Prompt
-                self.prompt_txt = tk.Label(self,text=self.settings["prompt_filename"])
+                self.prompt_txt = tk.Label(self,text=self.settings[key])
                 self.prompt_txt.grid(row=row_nr,column=1, sticky="W")
             elif key == "output_prefix":
                 # Output Folder
@@ -109,11 +115,18 @@ class BaseSet(tk.Frame):
         tk.Button(self,text="Ok",command = self.adjust_base_settings).grid(row=row_nr,column=1)
 
     def set_prompt(self):
+        if scenario_choice == ".txt file":
+            key = "prompt_filename"
+            file_type = (("txt files","*.txt"),("all files","*.*"))
+        else:
+            key = "scenario_filename"
+            file_type = (("scenario files","*.scenario"),("all files","*.*"))
+
         base_prompt_abs = tk.filedialog.askopenfilename(initialdir = json_dir,
             title = "Choose base prompt",
-            filetypes = (("txt files","*.txt"),("all files","*.*")))
-        self.settings["prompt_filename"] = os.path.relpath(base_prompt_abs, start = json_dir)
-        self.prompt_txt.configure(text=self.settings["prompt_filename"])
+            filetypes = (file_type))
+        self.settings[key] = os.path.relpath(base_prompt_abs, start = json_dir)
+        self.prompt_txt.configure(text=self.settings[key])
         
     def set_out_dir(self):
         out_dir_abs = tk.filedialog.askdirectory(initialdir = json_dir, 
@@ -146,7 +159,8 @@ class BaseSet(tk.Frame):
                 value = self.items[key].get() # get response (as string)
                 # transform into correct type, then store
                 setting_type = type(self.settings[key])
-                if setting_type == str:
+                if (setting_type == str) or (value == ""): 
+                # empty values are handled by nrt so no problem to just transfer them over
                     self.settings[key] = value
                 elif setting_type == int:
                     self.settings[key] = int(value)
@@ -298,12 +312,13 @@ class SetPermParams(tk.Frame):
 
         row_nr = 1
         for pick in perm_picks_li:
-            
-
             if pick == "prompt_filename":
-                self.perm[pick] = json_content[pick] # copy value from base settings
+                try:
+                    self.perm[pick] = json_content[pick] # copy value from base settings
+                except:
+                    self.perm[pick] = "prompt.txt" # if base setting uses scenario there will be no prompt name to opy
                 # also add base prompt to permutation list (in case users does never hits browse button)
-                json_content["permutations"][0]["prompt_filename"] = json_content["prompt_filename"]
+                json_content["permutations"][0]["prompt_filename"] = self.perm[pick]
                 # Browse Button for Base Prompt
                 # has its own handling and is thus not stored in self.items
                 tk.Label(self,text="Pick Prompts").grid(row=row_nr,column=0, sticky="E")
@@ -364,7 +379,6 @@ class SetPermParams(tk.Frame):
                 else:
                     print("WARNING! Transformation missing  for {} into {} for SetPermParams".format(key, str(setting_type)))
             json_content["permutations"][0][key] = self.perm[key]
-        print(self.perm)
         self.master.destroy()
         self.quit()
 
