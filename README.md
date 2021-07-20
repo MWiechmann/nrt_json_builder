@@ -12,8 +12,8 @@ This tool consists of two parts: The `nrt JSON builder` and the `nrt Launcher`
 # The nrt JSON Builder
 The Json Builder provieds a GUI that you can use to build your Input-JSONs for `nrt`. Most features of the current version of `nrt` (20-07-2021) are supported with the exception of running several permutation sets.
 
-![Example Menu 1: Set Base Parameters](https://i.imgur.com/c3nnQnO.png)
-![Example Menu 2: Choose Permutation Parameters](https://i.imgur.com/LqmKKMy.png)
+![Example Menu 1: Set Base Parameters](https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/set_base_prompt.png)
+![Example Menu 2: Choose Permutation Parameters](https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/choose_perms.png)
 
 The JSON Builder can also generate a config file that allows you to run `nrt` through the nrt Launcher.
 
