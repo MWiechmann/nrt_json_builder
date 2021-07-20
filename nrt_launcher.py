@@ -20,6 +20,10 @@ config.read(config_file)
 nrt_file = config.get("General", "nrt_file")
 json_file = config.get("General", "json_file")
 
+# the JSON input uses file location relative to itself
+# change working dir to json file location
+os.chdir(os.path.dirname(json_file))
+
 pmb.alert("Succesfully read in config file. Click Ok to start test batch.", "Start Test Batch")
 
 subprocess.check_call([nrt_file, json_file])

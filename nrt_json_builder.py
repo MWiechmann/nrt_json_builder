@@ -150,7 +150,6 @@ class BaseSet(tk.Frame):
         # and store in self.settings
         for key in self.items:
             if key == "memory":
-                print(self.items["memory"].get("1.0","end"))
                 memory_clean = clean_text_input(self.items["memory"].get("1.0","end"))
                 self.settings["memory"] = memory_clean
             elif key == "authors_note":
