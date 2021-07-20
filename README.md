@@ -10,7 +10,7 @@ This tool consists of two parts: The `nrt JSON builder` and the `nrt Launcher`
 * The easiest way to use this tool for windows users is to just download the exe files for the [nrt JSON Builder](https://github.com/MWiechmann/nrt_json_builder/blob/main/dist/nrt_json_builder.exe) and [nrt Launcher](https://github.com/MWiechmann/nrt_json_builder/blob/main/dist/nrt_launcher.exe)
 
 # The nrt JSON Builder
-The Json Builder provieds a GUI that you can use to build your Input-JSONs for `nrt`. Most feature of the current version of `nrt` (20-07-2021) are supported with the exception of running several permutation sets.
+The Json Builder provieds a GUI that you can use to build your Input-JSONs for `nrt`. Most features of the current version of `nrt` (20-07-2021) are supported with the exception of running several permutation sets.
 
 ![Example Menu 1: Set Base Parameters](https://i.imgur.com/c3nnQnO.png)
 ![Example Menu 2: Choose Permutation Parameters](https://i.imgur.com/LqmKKMy.png)
