@@ -261,7 +261,7 @@ perm_picks_li = [] # list with picks for permutation will be filled with user ch
 
 class ChoosePerm(tk.Frame):
     def __init__(self,master=None,**kw):
-        self.picks = {'prompt_filename': False, 'model': False, 'prefix': False, 'temperature': False, 'max_length': False,'min_length': False,
+        self.picks = {'prompt_filename': False, 'memory': False, 'authors_note': False, 'model': False, 'prefix': False, 'temperature': False, 'max_length': False,'min_length': False,
         'top_k': False, 'top_p': False, 'tail_free_sampling': False,
         'repetition_penalty': False, 'repetition_penalty_range': False, 'repetition_penalty_slope': False}
         tk.Frame.__init__(self,master=master,**kw)
@@ -308,7 +308,9 @@ class SetPermParams(tk.Frame):
         default_font = tk.font.nametofont("TkDefaultFont")
         default_font.configure(family="Arial", size=12)
 
-        tk.Label(self,text="Enter the values to use for the permutation. Seperate values with ','").grid(row=0, sticky="E", columnspan=2)
+        tk.Label(self,text="Enter the values to use for the permutation. Seperate values with ','.\n\
+            Excpetion: Seperate with `,,` for memory and authors_note")\
+        .grid(row=0, sticky="W", columnspan=2)
 
         row_nr = 1
         for pick in perm_picks_li:
@@ -327,13 +329,22 @@ class SetPermParams(tk.Frame):
                 # Text displaying current Base Prompt
                 self.prompt_txt = tk.Label(self,text=self.perm["prompt_filename"])
                 self.prompt_txt.grid(row=row_nr,column=1, sticky="W")    
+            elif (pick == "memory") or (pick == "authors_note"):
+                self.perm[pick] = json_content[pick] # copy value from base settings
+                tk.Label(self,text="IMPORTANT! For {} values should be seperated by ',,' instead of ','."\
+                    .format(pick)).grid(row=row_nr,column=0, sticky="W", columnspan=2)
+                row_nr += 1
+                tk.Label(self,text=pick).grid(row=row_nr,column=0, sticky="E")
+                self.items[pick] = tk.Text(self, font=('Arial', 10), height = 5, width = 30)
+                self.items[pick].insert("end", json_content[pick])
+                self.items[pick].grid(row=row_nr,column=1, sticky = "W")
             else:
                 self.perm[pick] = json_content["parameters"][pick] # copy value from base settings
                 tk.Label(self,text=pick).grid(row=row_nr,column=0, sticky="E")
                 self.items[pick] = tk.Entry(self, font=('Arial', 12))
                 default_text = str(json_content["parameters"][pick]) + ", value2, ..."
                 self.items[pick].insert(0, default_text)
-                self.items[pick].grid(row=row_nr,column=1)
+                self.items[pick].grid(row=row_nr,column=1, sticky = "W")
             row_nr += 1
 
         tk.Button(self,text="Ok",command = self.adjust_perm_params).grid(row=row_nr,column=1, sticky="E")
@@ -360,21 +371,28 @@ class SetPermParams(tk.Frame):
     def adjust_perm_params(self):
     #  store entries in self.params
         for key in self.items:
-            value = self.items[key].get() # get response (as string)
 
+            # make list from string - special treatment for memory & author's note
+            if (key == "memory") or (key == "authors_note"):
+                value = clean_text_input(self.items[key].get("1.0","end"))
+                delimiter = ",,"
+            else:
+                value = self.items[key].get() # get response (as string)
+                delimiter = ","
+            
             if value == "":
                 self.perm[key] = []
             else:
-                # make list from string 
-                value = value.split(",")
-                # transform into correct type and store
+                value = value.split(delimiter)
 
+                # transform into correct type and store
                 setting_type = type(self.perm[key])
                 if setting_type == str:
                     self.perm[key] = value
                 elif setting_type == int:
                     self.perm[key] = [int(item) for item in value]
                 elif setting_type == float:
+                    print(value)
                     self.perm[key] = [float(item) for item in value]
                 else:
                     print("WARNING! Transformation missing  for {} into {} for SetPermParams".format(key, str(setting_type)))
