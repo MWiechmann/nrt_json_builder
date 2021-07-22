@@ -70,7 +70,7 @@ Let's say you want to see if there is any difference between `Genre: scifi`, `Ge
 
 * That's it - the Builder will save these settings for you to an ini-file and close.
 
-One quick note about the ini-file: It will have a setting in there that reads `only_rec = False`. The builder will always be set to `False`. However, sometimes you might already have generated the original outputs and skip straight to the recursive testing (for example if you had to abort recursive testing for some reason). In that case you can set `only_rec = True` in the ini-file. This will make the Launcher skip straight to the recursive tests.
+One quick note about the ini-file: It will have a setting in there that reads `only_rec = False`. The builder will always set this to `False`. However, sometimes you might already have generated the original outputs and skip straight to the recursive testing (for example if you had to abort recursive testing for some reason). In that case you can set `only_rec = True` in the ini-file. This will make the Launcher skip straight to the recursive tests.
 
 ### Step 3: Run your tests!
 * Start [nrt_launcher.exe](https://github.com/MWiechmann/nrt_json_builder/blob/main/dist/nrt_launcher.exe) and load in the ini-file you just created with the launcher. The launcher should take everything from here. It will first fire up `nrt` to run the original tests and then use the generated outputs to generate *new* input json to feed to `nrt` for the recursive tests. This will take a while - just take a walk or something...
