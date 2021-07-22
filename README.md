@@ -89,14 +89,30 @@ One quick note about the ini-file: It will have a setting in there that reads `o
     * The input JSON used for this part of the recursive test (called `_recursive_input.json`)
     * `nrt`'s output files. Each iteration of each output file will have its own output file.
 
-<img src="(https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/recursive_example_inside_rec_folder.png" alt="drawing" width="400"/>
+<img src="https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/recursive_example_inside_rec_folder.png" alt="drawing" width="400"/>
 
 * Examine the results as you see fit
-
-<img src="(https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/recursive_example_excerpt_rectest.png" alt="drawing" width="400"/>
-
     * For this example I could count up how often Siggy recognizes his writing as SciFi:
           * control: 12/40 scifi: 30/40, SciFi: 33/40, science fiction: 32/40, Science Fiction :29/40
     * If you want you can even test the significance of the difference in proportions
            * To compute your p-value you can use [this online tool](https://www.socscistatistics.com/tests/ztest/default2.aspx) or [this one](https://www.medcalc.org/calc/comparison_of_proportions.php). But you should make sure that to also control for multiple testing before drawing any conclusions! You can use an online tool like [this one](https://tools.carbocation.com/FDR) to apply the Benjamini-Hochberg correction for mutliple testing (I would recommend to settle for an FDR of 0.1 for typical non-essential testing)
-            * In this example all keywords performed clearly better than the control (*corrected ps* < 001. There were no differences in performance between the keywords.
+            * In this example test run all keywords performed clearly better than the control (*corrected ps* < 001. There were no differences in performance between the keywords.
+
+Example output from a recursive test run:
+```
+[...]
+"It looks like we've found our target," replied Brigadier General Grace Han answered. "According to our satellite scans, there are two major concentrations of military forces over near the city of Albuquerque. We're going to have to move fast to take advantage of the situation."
+She paused briefly before continuing.
+"We don't know where exactly the enemy is located yet, so we'll need to send in both ground troops and air support. Our main force will hit first, followed shortly after by a second wave consisting of special operations teams. The primary goal is to secure a landing zone within range of our own heavy artillery."
+"And if we can't find a suitable spot?" asked Major Kato from the far side of the
+***
+Q: What is the genre of this story?
+A:
+
+=== Iteration 0     ==============================
+ Military SF/Military Fantasy (I guess). I'm not really sure what category it fits into, but I hope people enjoy reading it anyway!
+Chapter 1 - The Attack Begins
+Downtown Los Angeles
+The man's name was Peter Kim.
+[...]
+```
