@@ -60,7 +60,7 @@ Let's say you want to see if there is any difference between `Genre: scifi`, `Ge
 
 <img src="https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/recursive_example_add.png" alt="drawing" width="400"/>
 
-* Next, the Builder wants to know what the generation setting during the recursive testing should be. I would not go too crazy on the generations and iterations here: Each single output will become its own input json with each iteration as its own permutation so better to keep it small.
+* Next, the Builder wants to know what the generation setting during the recursive testing should be. I would not go too crazy on the generations and iterations here: Each single output will become its own input json with each iteration as its own permutation so better to keep it small. (In many cases 2-3 generations will be enough. But the evaulation question I used often leads to "interview with the author"-style output that can be quite interesting to read so I like 5 generations per iteration)
 
 <img src="https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/recursive_example_rec_base.png" alt="drawing" width="300"/>
 
