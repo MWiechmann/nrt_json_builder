@@ -64,7 +64,7 @@ Let's say you want to see if there is any difference between `Genre: scifi`, `Ge
 
 <img src="https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/recursive_example_rec_base.png" alt="drawing" width="300"/>
 
-* For the Parameters I wanted to know what is "on top of Sigurd's mind" when I ask him about the genre of the story, so I set top-k to 1.
+* For the Parameters I wanted to know what is "on top of Sigurd's mind" when I ask him about the genre of the story, so I set top-k to 1. I would usually advice to turn bracket banning *off*, Sigurd might want to generate something like `[ Genre: ...` and in this case you actually *want* that to happen. Obviously this is especially true if your evaluation addendum contains open brackets (e.g. `\n[ Author: ; Tags: ; Genre:`).
 
 <img src="https://github.com/MWiechmann/nrt_json_builder/blob/main/example%20images/recursive_example_rec_params.png" alt="drawing" width="300"/>
 
