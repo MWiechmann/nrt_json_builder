@@ -24,7 +24,7 @@ However, there is another purpose to the nrt Launcher: It enables you to use `nr
 # Automatic Recursive Testing
 Most people running their own testing on NAI have experienced that confirmation bias is real. Is `Genre: Fantasy` better than `Genre: fantasy` in [Author's Note](https://github.com/TravellingRobot/NAI_Community_Research/wiki/Author's-Notes-for-v3)? Does `tone: zany` *really* do anything? Or are you just kidding yourself when evaluating the outputs?
 
-Sometimes it would be nice to be able to quickly ask someone "Hey, what genre do you think this is?", ideally someone that is blind to your testing conditions. Well, why not just do exactly that with Sigurd?
+Sometimes it would be nice if you always had someone to quickly ask "Hey, what genre/tone/theme/etc do you think this is?". Ideally, someone that is blind to your testing conditions. Well, why not just do exactly that with Sigurd?
 
 This is the idea of recursive testing - you take the output from your `nrt` test set, modify it, and then feed the whole thing back into the AI as input. Usually, you will edit out your context manipulation (like A/N or memory) to make the test "blind" and add an evaluation question for the AI to evaluate the success of your manipulation. The following example should hopefully make clearer how this works in practice.
 
