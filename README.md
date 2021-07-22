@@ -93,10 +93,10 @@ One quick note about the ini-file: It will have a setting in there that reads `o
 
 * Examine the results as you see fit
     * For this example, I counted up how often Siggy recognizes his writing as SciFi:
-          * control: 12/40 scifi: 30/40, SciFi: 33/40, science fiction: 32/40, Science Fiction :29/40
+        * control: 12/40 scifi: 30/40, SciFi: 33/40, science fiction: 32/40, Science Fiction :29/40
     * If you want you can even test the significance of the difference in proportions
-           * To compute your p-value you can use [this online tool](https://www.socscistatistics.com/tests/ztest/default2.aspx) or [this one](https://www.medcalc.org/calc/comparison_of_proportions.php). But you should make sure that to also control for multiple testing before drawing any conclusions! You can use an online tool like [this one](https://tools.carbocation.com/FDR) to apply the Benjamini-Hochberg correction for mutliple testing (I would recommend to settle for an FDR of 0.1 for typical non-essential testing)
-            * In this example test run all keywords performed clearly better than the control (*corrected ps* < 001. There were no differences in performance between the keywords.
+        * To compute your p-value you can use [this online tool](https://www.socscistatistics.com/tests/ztest/default2.aspx) or [this one](https://www.medcalc.org/calc/comparison_of_proportions.php). But you should make sure that to also control for multiple testing before drawing any conclusions! You can use an online tool like [this one](https://tools.carbocation.com/FDR) to apply the Benjamini-Hochberg correction for mutliple testing (I would recommend to settle for an FDR of 0.1 for typical non-essential testing)
+        * In this example test run all keywords performed clearly better than the control (*corrected ps* < 001. There were no differences in performance between the keywords.
 
 Example output from a recursive test run:
 ```
