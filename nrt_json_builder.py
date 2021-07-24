@@ -693,7 +693,7 @@ if recursive_choice == "Yes: Do recursive tests":
 
     root = tk.Tk()
     root.title("Set Parameters for Recursive Testing")
-    BaseParams(root).grid()
+    RecParams(root).grid()
     root.mainloop()
 else:
     recursive_json = {}
