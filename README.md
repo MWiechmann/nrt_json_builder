@@ -22,8 +22,6 @@ Are you clinically averse to running programs through the command line? Fear not
 However, there is another purpose to the nrt Launcher: It enables you to use `nrt` for automatic recursive testing.
 
 # Automatic Recursive Testing
-**Attention: Currently there is a bug that causes the generation settings for recursive testing not being written to the ini-file correctly. Until I fix this: If you want to use the recursive testing, check the `rec_json` entry in ini-file and edit if necessary.**
-
 Most people running their own testing on NAI have experienced that confirmation bias is real. Is `Genre: Fantasy` better than `Genre: fantasy` in [Author's Note](https://github.com/TravellingRobot/NAI_Community_Research/wiki/Author's-Notes-for-v3)? Does `tone: zany` *really* do anything? Or are you just kidding yourself when evaluating the outputs?
 
 Sometimes it would be nice if you always had someone to quickly ask "Hey, what genre/tone/theme/etc do you think this is?". Ideally, someone that is blind to your testing conditions. Well, why not just do exactly that with Sigurd?
