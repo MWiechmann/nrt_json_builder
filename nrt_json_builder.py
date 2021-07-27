@@ -8,7 +8,7 @@ from tkinter import ttk
 import pymsgbox as pmb
 from configparser import ConfigParser
 
-from subscripts.menus import *
+import subscripts.menus as menus
 
 # set json contents (use default for now)
 json_content = { 
@@ -60,80 +60,13 @@ if scenario_choice == ".scneario file":
 # MENU 1 : Enter Base Settings
 root = tk.Tk()
 root.title("Set Base Settings")
-BaseSet(root, settings_json=json_content, json_dir=json_dir).grid()
+menus.BaseSet(root, settings_json=json_content, json_dir=json_dir).grid()
 root.mainloop()
 
 # MENU 2: Enter Base Parameters:
-class BaseParams(tk.Frame):
-    def __init__(self,master=None,**kw):
-        self.params = copy.deepcopy(json_content["parameters"])
-        self.params.pop('use_cache', None)
-        self.params.pop('use_string', None)
-        self.params.pop('return_full_text', None)
-
-        self.items = {} # will be used to store/reference the entry widgets
-        
-        tk.Frame.__init__(self,master=master,**kw)
-
-        default_font = tk.font.nametofont("TkDefaultFont")
-        default_font.configure(family="Arial", size=12)
-
-        tk.Label(self,text="Chose Base Parameters").grid(row=0, sticky="E")
-        row_nr = 1
-        for key in self.params:
-            if key == "bad_words_ids":
-                tk.Label(self,text="Bad words IDs. Seperate IDs with `,`.").grid(row=row_nr,column=0, sticky="E")
-                self.items[key] = tk.Entry(self, font=('Arial', 12))
-                self.items[key].grid(row=row_nr,column=1)
-            elif key == "ban_brackets":
-                tk.Label(self,text="Ban bracket generation").grid(row=row_nr,column=0, sticky="E")
-                self.items[key] = tk.ttk.Checkbutton(self, text="", takefocus=False)
-                self.items[key].grid(row=row_nr, column = 1, sticky="W")
-                self.items[key].invoke()
-            else:
-                tk.Label(self,text=key).grid(row=row_nr,column=0, sticky="E")
-                self.items[key] = tk.Entry(self, font=('Arial', 12))
-                self.items[key].insert(0, self.params[key])
-                self.items[key].grid(row=row_nr,column=1)
-
-            row_nr += 1
-
-        tk.Button(self,text="Ok",command = self.adjust_base_params).grid(row=row_nr,column=1, sticky="E")
-
-    def adjust_base_params(self):
-        # store entries in self.params
-        for key in self.items:
-            
-            if key == "bad_words_ids":
-                value = self.items[key].get() # get response (as string)
-                if value == "":
-                    self.params[key] = []
-                else:
-                    value = value.split(",")
-                    self.params[key] = [int(item) for item in value]
-            elif key == "ban_brackets":
-                self.params[key] = self.items[key].instate(["selected"])
-            else:
-                value = self.items[key].get() # get response (as string)
-                # transform into correct type, then store
-                setting_type = type(self.params[key])
-                if setting_type == str:
-                    self.params[key] = value
-                elif setting_type == int:
-                    self.params[key] = int(value)
-                elif setting_type == float:
-                    self.params[key] = float(value)
-                else:
-                    print("WARNING! Transformation missing  for {} into {} for BaseParams".format(key, str(setting_type)))
-
-        for key in self.params:
-            json_content["parameters"][key] = self.params[key]
-        self.master.destroy()
-        self.quit()
-
 root = tk.Tk()
 root.title("Set Base Parameters")
-BaseParams(root).grid()
+menus.BaseParams(root, settings_json=json_content).grid()
 root.mainloop()
 
 ### PERMUTATION

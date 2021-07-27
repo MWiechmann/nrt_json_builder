@@ -149,9 +149,104 @@ class BaseSet(tk.Frame):
         for key in self.settings:
             if self.settings[key] == "":
                 # nrt handels missing fields fine so the cleanest solution is to just to delete the key
-                settings_json.pop(key)
+                settings_json.pop(key, None)
             else:
                 settings_json[key] = self.settings[key]
         self.master.destroy()
         self.quit()
 
+class BaseParams(tk.Frame):
+    def __init__(self,master=None, settings_json={}, **kw):
+
+
+        # populate self.params
+        # check if the settings_json has the necessary keys
+        # fill entries for missing keys
+        params_json_keys =  ["model", "prefix", "temperature", "max_length", "min_length",
+        "top_k", "top_p", "tail_free_sampling", "repetition_penalty", "repetition_penalty_range",
+        "repetition_penalty_slope", "bad_words_ids", "ban_brackets"]
+        self.params = {}
+        # if there is no parameters entry in the json_dict just fill in everything with blanks
+        if "parameters" not in settings_json:
+            for key in params_json_keys:
+                self.params[key] = ""
+        # if there is a parameters entry, copy over the specific parameters
+        # if a parameter is missing fill in with blank tring
+        else:
+            for key in params_json_keys:
+                if key in settings_json["parameters"]:
+                    self.params[key] = settings_json["parameters"][key]
+                else:
+                    self.params[key] = ""
+
+        self.items = {} # will be used to store/reference the entry widgets
+        
+        tk.Frame.__init__(self,master=master,**kw)
+
+        default_font = tk.font.nametofont("TkDefaultFont")
+        default_font.configure(family="Arial", size=12)
+
+        tk.Label(self,text="Chose Base Parameters").grid(row=0, sticky="E")
+        row_nr = 1
+        for key in self.params:
+            if key == "bad_words_ids":
+                tk.Label(self,text="Bad words IDs. Seperate IDs with `,`.").grid(row=row_nr,column=0, sticky="E")
+                self.items[key] = tk.Entry(self, font=('Arial', 12))
+                self.items[key].grid(row=row_nr,column=1)
+            elif key == "ban_brackets":
+                tk.Label(self,text="Ban bracket generation").grid(row=row_nr,column=0, sticky="E")
+                self.items[key] = tk.ttk.Checkbutton(self, text="", takefocus=False)
+                self.items[key].grid(row=row_nr, column = 1, sticky="W")
+                self.items[key].invoke()
+            else:
+                tk.Label(self,text=key).grid(row=row_nr,column=0, sticky="E")
+                self.items[key] = tk.Entry(self, font=('Arial', 12))
+                self.items[key].insert(0, self.params[key])
+                self.items[key].grid(row=row_nr,column=1)
+
+            row_nr += 1
+
+        tk.Button(self,text="Ok",command = partial(self.adjust_base_params, settings_json)).grid(row=row_nr,column=1, sticky="E")
+
+    def adjust_base_params(self, settings_json):
+        """ get responses from items (that have not been handled yet)
+        and store in self.params
+        """
+
+        setting_types_dict = {"model":str, "prefix":str, "temperature":float, "max_length":int, "min_length":int,
+        "top_k":int, "top_p":float, "tail_free_sampling":float, "repetition_penalty":float, "repetition_penalty_range":int,
+        "repetition_penalty_slope":float, "bad_words_ids":list, "ban_brackets":bool}
+
+        for key in self.items:
+            
+            if key == "bad_words_ids":
+                value = self.items[key].get() # get response (as string)
+                if value == "":
+                    self.params[key] = []
+                else:
+                    value = value.split(",")
+                    self.params[key] = [int(item) for item in value]
+            elif key == "ban_brackets":
+                self.params[key] = self.items[key].instate(["selected"])
+            else:
+                value = self.items[key].get() # get response (as string)
+                # transform into correct type, then store
+                setting_type = setting_types_dict[key]
+                if setting_type == str or (value == ""):
+                    # empty values are handled by nrt so no problem to just transfer them over
+                    self.params[key] = value
+                elif setting_type == int:
+                    self.params[key] = int(value)
+                elif setting_type == float:
+                    self.params[key] = float(value)
+                else:
+                    print("WARNING! Transformation missing  for {} into {} for BaseParams".format(key, str(setting_type)))
+
+        for key in self.params:
+            if self.params[key] == "":
+                # nrt handels missing fields fine so the cleanest solution is to just to delete the key
+                settings_json["parameters"].pop(key, None)
+            else:
+                settings_json["parameters"][key] = self.params[key]
+        self.master.destroy()
+        self.quit()
