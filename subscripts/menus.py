@@ -9,7 +9,8 @@ def clean_text_input(text_input):
     return text_input[:-1] if text_input.endswith("\n") else text_input
 
 class BaseSet(tk.Frame):
-    """Menu to add the Base Settings for direct testing
+    """Menu to add the Base Settings for direct testing.
+    Needs to a dict with settings to be passed (settings_json) to save settings to.
     Takes input for: prompt_filename or scenario_filename,
     memory, authors_note, output_prefix, iterations, generations
     """
@@ -156,6 +157,12 @@ class BaseSet(tk.Frame):
         self.quit()
 
 class BaseParams(tk.Frame):
+    """Menu to add the Base Parameters for direct testing
+    Needs to a dict with settings to be passed (settings_json) to save settings to.
+    Takes input for: model, prefix, temperature, max_length, min_length,
+    top_k, top_p, tail_free_sampling, repetition_penalty, repetition_penalty_range,
+    repetition_penalty_slope, bad_words_ids, ban_brackets
+    """
     def __init__(self,master=None, settings_json={}, **kw):
 
 
@@ -248,5 +255,46 @@ class BaseParams(tk.Frame):
                 settings_json["parameters"].pop(key, None)
             else:
                 settings_json["parameters"][key] = self.params[key]
+        self.master.destroy()
+        self.quit()
+
+class ChoosePerm(tk.Frame):
+    """Menu to choose the variables to be permutated in direct testing
+    Need an empty list to be passed (perm_picks_li) to save choices to.
+    perm_picks_li will be emptied before choices are saved into it!
+    Possible choices for permutation: prompt_filename, memory, authors_note, model, prefix, 
+    temperature, max_length,min_length, top_k, top_p, tail_free_sampling,
+    repetition_penalty, repetition_penalty_range, repetition_penalty_slope
+    """
+    def __init__(self,master=None, perm_picks = [], **kw):
+        self.picks = {'prompt_filename': False, 'memory': False, 'authors_note': False, 'model': False, 'prefix': False, 'temperature': False, 'max_length': False,'min_length': False,
+        'top_k': False, 'top_p': False, 'tail_free_sampling': False,
+        'repetition_penalty': False, 'repetition_penalty_range': False, 'repetition_penalty_slope': False}
+        tk.Frame.__init__(self,master=master,**kw)
+
+        self.items = {} # will be used to store/reference the entry widgets
+
+        default_font = tk.font.nametofont("TkDefaultFont")
+        default_font.configure(family="Arial", size=12)
+
+        tk.Label(self,text="Chose Parameters to permutate (modify) over iterations").grid(row=0)
+        row_nr = 1
+        for key in self.picks:
+            self.items[key] = tk.ttk.Checkbutton(self, text=key, takefocus=False)
+            self.items[key].grid(row=row_nr, sticky="W")
+            self.items[key].invoke()
+            self.items[key].invoke()
+            row_nr += 1
+
+        tk.Button(self,text="OK",command = partial(self.get_picks_vals, perm_picks)).grid(row=row_nr,column=1, sticky="E")
+
+    def get_picks_vals(self, perm_picks):
+        del perm_picks[:]
+
+        for key in self.items:
+            self.picks[key] = self.items[key].instate(["selected"])
+            if self.picks[key]:
+                perm_picks.append(key)
+        print(perm_picks)
         self.master.destroy()
         self.quit()

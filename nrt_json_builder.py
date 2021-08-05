@@ -69,47 +69,20 @@ root.title("Set Base Parameters")
 menus.BaseParams(root, settings_json=json_content).grid()
 root.mainloop()
 
+print(json_content)
+
 ### PERMUTATION
 
 # Menu 3: Select Vars for Permutation for prompts
 
 perm_picks_li = [] # list with picks for permutation will be filled with user choices
 
-class ChoosePerm(tk.Frame):
-    def __init__(self,master=None,**kw):
-        self.picks = {'prompt_filename': False, 'memory': False, 'authors_note': False, 'model': False, 'prefix': False, 'temperature': False, 'max_length': False,'min_length': False,
-        'top_k': False, 'top_p': False, 'tail_free_sampling': False,
-        'repetition_penalty': False, 'repetition_penalty_range': False, 'repetition_penalty_slope': False}
-        tk.Frame.__init__(self,master=master,**kw)
-
-        self.items = {} # will be used to store/reference the entry widgets
-
-        default_font = tk.font.nametofont("TkDefaultFont")
-        default_font.configure(family="Arial", size=12)
-
-        tk.Label(self,text="Chose Parameters to permutate (modify) over iterations").grid(row=0)
-        row_nr = 1
-        for key in self.picks:
-            self.items[key] = tk.ttk.Checkbutton(self, text=key, takefocus=False)
-            self.items[key].grid(row=row_nr, sticky="W")
-            self.items[key].invoke()
-            self.items[key].invoke()
-            row_nr += 1
-
-        tk.Button(self,text="OK",command = self.get_picks_vals).grid(row=row_nr,column=1, sticky="E")
-
-    def get_picks_vals(self):
-        for key in self.items:
-            self.picks[key] = self.items[key].instate(["selected"])
-            if self.picks[key]:
-                perm_picks_li.append(key)
-        self.master.destroy()
-        self.quit()
-
 root = tk.Tk()
 root.title("Choose Permutation Parameters")
-ChoosePerm(root).grid()
+menus.ChoosePerm(root, perm_picks=perm_picks_li).grid()
 root.mainloop()
+
+print(perm_picks_li)
 
 # delete permutation key if nothing to permutate was chosen
 if not perm_picks_li:

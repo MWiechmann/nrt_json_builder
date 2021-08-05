@@ -1,1 +1,4 @@
 tests/
+__pycache__/
+build/
+subscripts/__pycache__/
